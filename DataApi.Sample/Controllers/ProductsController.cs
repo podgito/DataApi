@@ -12,6 +12,7 @@ namespace DataApi.Sample.Controllers
 
         public IEnumerable<object> Get()
         {
+            
             return Enumerable.Empty<object>();
         }
 

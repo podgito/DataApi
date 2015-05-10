@@ -14,7 +14,9 @@ namespace DataApi.Sample
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            config.Routes.MapHttpRoute("Products", "api/products/{productId}", defaults: new { controller = "Products", productId = RouteParameter.Optional });
+            //var x = typeof(DataApi.);
+
+            config.Routes.MapHttpRoute("Products", "api/products/{productId}", defaults: new { controller = "DataApi", productId = RouteParameter.Optional });
             
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",

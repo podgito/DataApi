@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataApi.Sample", "DataApi.S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataApi", "DataApi\DataApi.csproj", "{324F928D-016C-4413-BD3B-5BAF06EB6B88}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataApi.Tests", "DataApi.Tests\DataApi.Tests.csproj", "{F21C7AE1-DB97-4317-9712-31D0FD82B1AA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{324F928D-016C-4413-BD3B-5BAF06EB6B88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{324F928D-016C-4413-BD3B-5BAF06EB6B88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{324F928D-016C-4413-BD3B-5BAF06EB6B88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F21C7AE1-DB97-4317-9712-31D0FD82B1AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F21C7AE1-DB97-4317-9712-31D0FD82B1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F21C7AE1-DB97-4317-9712-31D0FD82B1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F21C7AE1-DB97-4317-9712-31D0FD82B1AA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
