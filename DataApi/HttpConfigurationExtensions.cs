@@ -13,12 +13,17 @@ namespace DataApi
 
         public static object AddDataApiRoute(this HttpConfiguration config, string routeName, string routeTemplate, string storedProcedureName, object defaults = null)
         {
+            if (defaults == null) defaults = new {};
 
-            if (defaults == null) defaults = new { controller = "DataApi" };
+            IDictionary<string, object> defaults2 = defaults.ToDictionary();
+            defaults2.Add("controller", "DataApi");
+            defaults2.Add("storedProcedure", storedProcedureName);
 
-            else defaults = defaults.AddProperty("controller", "DataApi");
+
+
+            //defaults = defaults.AddProperty("storedProcedure", storedProcedureName);
             
-            var route = config.Routes.MapHttpRoute(routeName, routeTemplate, defaults);
+            var route = config.Routes.MapHttpRoute(routeName, routeTemplate, defaults2);
             return route;
         }
 

@@ -16,8 +16,11 @@ namespace DataApi.Sample
 
             //var x = typeof(DataApi.);
 
-            config.Routes.MapHttpRoute("Products", "api/products/{productId}", defaults: new { controller = "DataApi", productId = RouteParameter.Optional });
-            
+            //config.Routes.MapHttpRoute("Products", "api/products/{productId}", defaults: new { controller = "DataApi", productId = RouteParameter.Optional });
+
+            config.AddDataApiRoute("ProductsApi", "api/products/{productId}", "USP_GetProducts",
+                new {productId = RouteParameter.Optional});
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
