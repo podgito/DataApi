@@ -16,14 +16,15 @@ namespace DataApi
         {
             var storedProcedure = this.ControllerContext.RouteData.Values["storedProcedure"].ToString();
 
-            var inputs =
+            dynamic inputs =
                 ControllerContext.RouteData.Values.Where(
-                    kvp => !(kvp.Key == "controller" || kvp.Key == "storedProcedure")).ToDictionary();
+                    kvp => !(kvp.Key == "controller" || kvp.Key == "storedProcedure"));
 
             return new
             {
                 storedProcedure,
-                inputs = inputs
+                inputs = inputs,
+                routeData = this.ControllerContext.RouteData.Values
             };
         }
 

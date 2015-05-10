@@ -54,11 +54,15 @@
   <ItemGroup>
     <Compile Include="DataApiController.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
+    <Compile Include="Internals\DictionaryExtensions.cs" />
     <Compile Include="Internals\ObjectExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Internals\SQLServer\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
