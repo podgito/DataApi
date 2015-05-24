@@ -6,29 +6,67 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
 using DataApi.Internals;
+using System.Data;
+using DataTableMapper;
 
 namespace DataApi
 {
+    public class Product
+    {
+        public int ProductId { get; set; }
+        public string Name { get; set; }
+    }
     public class DataApiController : ApiController
     {
 
-        public object Get()
+
+        //public DataApiController(Func<DataTable, object> mappingFunction, string storedProcedure)
+        //{
+
+        //}
+
+        private DataTable CreateProductsTable()
         {
-            var storedProcedure = this.ControllerContext.RouteData.Values["storedProcedure"].ToString();
+            var table = new DataTable();
+            table.Columns.Add("ProductId");
+            table.Columns.Add("Name");
+            return table;
+        }
 
+        public object Get(string storedProcedure)
+        {
+            //var storedProcedure = this.ControllerContext.RouteData.Values["storedProcedure"].ToString();
+
+            //Get all the inputs
             dynamic inputs =
-                ControllerContext.RouteData.Values.Where(
-                    kvp => !(kvp.Key == "controller" || kvp.Key == "storedProcedure"));
+    ControllerContext.RouteData.Values.Where(
+        kvp => !(kvp.Key == "controller" || kvp.Key == "storedProcedure"));
 
-            dynamic qs = ControllerContext.Request.GetQueryNameValuePairs();
+            //Map to dictionary<string, object>
 
-            return new
-            {
-                storedProcedure,
-                inputs = inputs,
-                routeData = this.ControllerContext.RouteData.Values,
-                qs
-            };
+            //Call stored procedure
+
+            var table = CreateProductsTable();
+            table.Rows.Add(1, "Xbox");
+            table.Rows.Add(2, "PS3");
+
+            //table.MapTo<Product>();
+
+            //Map result using mapping function
+
+
+            var mapping = (Func<DataTable, object>)this.ControllerContext.RouteData.Values["mapping"];
+            return mapping(table);
+
+            //this.ControllerContext.RequestContext.RouteData.Route.
+
+
+            //return new
+            //{
+            //    storedProcedure,
+            //    inputs = inputs,
+            //    routeData = this.ControllerContext.RouteData.Values
+            //};
         }
 
     }
