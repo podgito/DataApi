@@ -20,11 +20,14 @@ namespace DataApi
                 ControllerContext.RouteData.Values.Where(
                     kvp => !(kvp.Key == "controller" || kvp.Key == "storedProcedure"));
 
+            dynamic qs = ControllerContext.Request.GetQueryNameValuePairs();
+
             return new
             {
                 storedProcedure,
                 inputs = inputs,
-                routeData = this.ControllerContext.RouteData.Values
+                routeData = this.ControllerContext.RouteData.Values,
+                qs
             };
         }
 
