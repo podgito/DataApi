@@ -33,14 +33,18 @@ namespace DataApi
             return table;
         }
 
+        public object IdealGet(string storedProcedure, IDictionary<string, object> inputs, Func<DataTable, object> mapping, object dataProvider)
+        {
+            throw new NotImplementedException();
+        }
+
         public object Get(string storedProcedure)
         {
             //var storedProcedure = this.ControllerContext.RouteData.Values["storedProcedure"].ToString();
 
             //Get all the inputs
             dynamic inputs =
-    ControllerContext.RouteData.Values.Where(
-        kvp => !(kvp.Key == "controller" || kvp.Key == "storedProcedure"));
+    ControllerContext.RouteData.Values.Where(kvp => !(kvp.Key == "controller" || kvp.Key == "storedProcedure"));
 
             //Map to dictionary<string, object>
 
@@ -50,13 +54,17 @@ namespace DataApi
             table.Rows.Add(1, "Xbox");
             table.Rows.Add(2, "PS3");
 
-            //table.MapTo<Product>();
 
             //Map result using mapping function
+
+            //return new { };
 
 
             var mapping = (Func<DataTable, object>)this.ControllerContext.RouteData.Values["mapping"];
             return mapping(table);
+
+
+            //return table.AsEnumerable().ToDictionary();
 
             //this.ControllerContext.RequestContext.RouteData.Route.
 

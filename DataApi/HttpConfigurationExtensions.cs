@@ -14,6 +14,10 @@ namespace DataApi
     public static class HttpConfigurationExtensions
     {
 
+        public static IProvisionalDataApiRoute AddDataApiRoute(this HttpConfiguration config, string routeName, string routeTemplate)
+        {
+            return new ProvisionalDataApiRoute(routeName, routeTemplate, config);
+        }
 
         public static IRouteMapping AddDataApiRoute(this HttpConfiguration config, string routeName, string routeTemplate, string storedProcedureName, object defaults = null)
         {
