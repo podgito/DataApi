@@ -8,6 +8,7 @@ using DataApi.Internals;
 using System.Data;
 using DataApi.Internals.Flow;
 using DataTableMapper;
+using System.Web.Http.Routing;
 
 namespace DataApi
 {
@@ -30,6 +31,25 @@ namespace DataApi
             var route = config.Routes.MapHttpRoute(routeName, routeTemplate, defaults2);
 
             return new RouteMapping(route);
+        }
+
+        public static void MapDataApiRoute(this HttpConfiguration config, string routeTemplate, object defaults = null)
+        {
+
+        }
+
+        class FluentRouteSyntax
+        {
+
+            public FluentRouteSyntax(string routeName, IHttpRoute route)
+            {
+                RouteName = routeName;
+                Route = Route;
+            }
+
+            internal string RouteName { get; private set; }
+            internal IHttpRoute Route { get; private set; }
+            
         }
 
     }
