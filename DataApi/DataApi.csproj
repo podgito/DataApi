@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="DataApiController.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
+    <Compile Include="Internals\Data\SQLServer\SQLServerClass.cs" />
     <Compile Include="Internals\DictionaryExtensions.cs" />
     <Compile Include="Internals\Flow\IRouteMapping.cs" />
     <Compile Include="Internals\Flow\RouteMapping.cs" />
@@ -67,7 +68,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Internals\SQLServer\" />
+    <Folder Include="Internals\Data\MySQL\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
