@@ -9,6 +9,7 @@ using System.Data;
 using DataApi.Internals.Flow;
 using DataTableMapper;
 using Newtonsoft.Json.Serialization;
+using System.Web.Http.Routing;
 using DataTableMapper;
 
 namespace DataApi
@@ -16,6 +17,10 @@ namespace DataApi
     public static class HttpConfigurationExtensions
     {
 
+        public static IProvisionalDataApiRoute AddDataApiRoute(this HttpConfiguration config, string routeName, string routeTemplate)
+        {
+            return new ProvisionalDataApiRoute(routeName, routeTemplate, config);
+        }
 
         public static UrlTemplateDefinition MapDataApiRoute(this HttpConfiguration config, string routeTemplate)
         {
@@ -92,6 +97,25 @@ namespace DataApi
 
 
             return new RouteMapping(route);
+        }
+
+        public static void MapDataApiRoute(this HttpConfiguration config, string routeTemplate, object defaults = null)
+        {
+
+        }
+
+        class FluentRouteSyntax
+        {
+
+            public FluentRouteSyntax(string routeName, IHttpRoute route)
+            {
+                RouteName = routeName;
+                Route = Route;
+            }
+
+            internal string RouteName { get; private set; }
+            internal IHttpRoute Route { get; private set; }
+            
         }
 
 

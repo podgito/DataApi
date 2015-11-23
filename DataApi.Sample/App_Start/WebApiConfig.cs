@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataApi.DataProviders;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
@@ -30,11 +31,19 @@ namespace DataApi.Sample
 
             config.AddDataApiRoute("Sales", "api/sales/{saleId}", "USP_GetProducts");
 
+            config.AddDataApiRoute("Sales2", "api/v2/sales").MapToStoredProcedure<SqlServerDataProvider>("USP_GetSales").ReturnsArray<Product>();
+
+            //config.AddDataApiRoute("Sales2", "api/v2/sales").MapToStoredProcedure<SqlServer>("USP_GetSales").ReturnsArrayOf<ProductSale>();
+
+            
+
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            
         }
     }
 }

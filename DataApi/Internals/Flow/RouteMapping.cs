@@ -25,7 +25,9 @@ namespace DataApi.Internals.Flow
             var mapping = new Func<DataTable, T>(dt => dt.MapTo<T>().FirstOrDefault());
             var defaults = Route.Defaults;
 
+            defaults.Remove("mapping");
             defaults.Add("mapping", mapping);
+
 
             //Route
 
@@ -37,7 +39,7 @@ namespace DataApi.Internals.Flow
         {
             var mapping = new Func<DataTable, IEnumerable<T>>(dt => dt.MapTo<T>());
             var defaults = Route.Defaults;
-
+            defaults.Remove("mapping");
             defaults.Add("mapping", mapping);
         }
     }

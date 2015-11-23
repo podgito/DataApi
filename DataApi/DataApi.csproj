@@ -11,6 +11,21 @@
     <AssemblyName>DataApi</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -57,9 +72,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataApiController.cs" />
+    <Compile Include="DataProviders\IDataProvider.cs" />
+    <Compile Include="DataProviders\SqlServerDataProvider.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
     <Compile Include="Internals\Data\SQLServer\SQLServerClass.cs" />
     <Compile Include="Internals\DictionaryExtensions.cs" />
+    <Compile Include="Internals\Flow\ProvisionalDataApiRoute.cs" />
+    <Compile Include="Internals\Flow\IProvisionalDataApiRoute.cs" />
     <Compile Include="Internals\Flow\IRouteMapping.cs" />
     <Compile Include="Internals\Flow\RouteMapping.cs" />
     <Compile Include="Internals\ObjectExtensions.cs" />
@@ -70,6 +89,23 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Internals\Data\MySQL\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
