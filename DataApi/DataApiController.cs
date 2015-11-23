@@ -8,6 +8,7 @@ using System.Web.Http;
 using DataApi.Internals;
 using System.Data;
 using DataTableMapper;
+using DataApi.Internals.Data.SQLServer;
 
 namespace DataApi
 {
@@ -46,9 +47,15 @@ namespace DataApi
 
             //Call stored procedure
 
-            var table = CreateProductsTable();
-            table.Rows.Add(1, "Xbox");
-            table.Rows.Add(2, "PS3");
+            var conn = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Projects\DataApi\DataApi.Sample\App_Data\SampleDB.mdf;Integrated Security=True";
+
+            var sql = new SQLServerClass(conn);
+
+            var table = sql.ExecuteQuery(storedProcedure);
+
+            //var table = CreateProductsTable();
+            //table.Rows.Add(1, "Xbox");
+            //table.Rows.Add(2, "PS3");
 
             //table.MapTo<Product>();
 
