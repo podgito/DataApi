@@ -24,7 +24,7 @@ namespace DataApi.Internals.Data.SQLServer
             DataSet resultSet = new DataSet();
             var sqlAdapter = new SqlDataAdapter(cmd);
 
-            cmd.CommandText = "SELECT * FROM Products";
+            cmd.CommandText = query; // "SELECT * FROM Products";
             cmd.CommandType = CommandType.Text;
             cmd.Connection = sqlConnection1;
 

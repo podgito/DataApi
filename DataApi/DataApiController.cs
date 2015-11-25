@@ -26,62 +26,31 @@ namespace DataApi
 
         //}
 
-        private DataTable CreateProductsTable()
-        {
-            var table = new DataTable();
-            table.Columns.Add("ProductId");
-            table.Columns.Add("Name");
-            return table;
-        }
-
         public object IdealGet(string storedProcedure, IDictionary<string, object> inputs, Func<DataTable, object> mapping, object dataProvider)
         {
             throw new NotImplementedException();
         }
 
-        public object Get(string storedProcedure)
+        public object Get(string query)
         {
             //var storedProcedure = this.ControllerContext.RouteData.Values["storedProcedure"].ToString();
 
             //Get all the inputs
             dynamic inputs =
-    ControllerContext.RouteData.Values.Where(kvp => !(kvp.Key == "controller" || kvp.Key == "storedProcedure"));
+    ControllerContext.RouteData.Values.Where(kvp => !(kvp.Key == RouteDataConstants.ControllerKey || kvp.Key == RouteDataConstants.QueryKey));
 
-            //Map to dictionary<string, object>
-
-            //Call stored procedure
 
             var conn = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Projects\DataApi\DataApi.Sample\App_Data\SampleDB.mdf;Integrated Security=True";
 
             var sql = new SQLServerClass(conn);
 
-            var table = sql.ExecuteQuery(storedProcedure);
-
-            //var table = CreateProductsTable();
-            //table.Rows.Add(1, "Xbox");
-            //table.Rows.Add(2, "PS3");
+            var table = sql.ExecuteQuery(query);
 
 
-            //Map result using mapping function
 
-            //return new { };
-
-
-            var mapping = (Func<DataTable, object>)this.ControllerContext.RouteData.Values["mapping"];
+            var mapping = (Func<DataTable, object>)this.ControllerContext.RouteData.Values[RouteDataConstants.MappingFunctionKey];
             return mapping(table);
 
-
-            //return table.AsEnumerable().ToDictionary();
-
-            //this.ControllerContext.RequestContext.RouteData.Route.
-
-
-            //return new
-            //{
-            //    storedProcedure,
-            //    inputs = inputs,
-            //    routeData = this.ControllerContext.RouteData.Values
-            //};
         }
 
     }

@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web.Http;
-using DataApi.Internals;
-using System.Data;
+﻿using DataApi.Internals;
 using DataApi.Internals.Flow;
 using DataTableMapper;
-using Newtonsoft.Json.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.Linq;
+using System.Web.Http;
 using System.Web.Http.Routing;
-using DataTableMapper;
 
 namespace DataApi
 {
     public static class HttpConfigurationExtensions
     {
-
         public static IProvisionalDataApiRoute AddDataApiRoute(this HttpConfiguration config, string routeName, string routeTemplate)
         {
             return new ProvisionalDataApiRoute(routeName, routeTemplate, config);
@@ -45,27 +40,26 @@ namespace DataApi
                 return this;
             }
 
-            public DataApiRouteDefinition ToStoredProcedure(string storedProcedureName)
+            public DataApiRouteDefinition ToQuery(string query)
             {
-                return new DataApiRouteDefinition(this, storedProcedureName);
+                return new DataApiRouteDefinition(this, query);
             }
         }
 
         public class DataApiRouteDefinition
         {
-
             private IDictionary<string, object> _defaults;
             private UrlTemplateDefinition _templateDefinition;
             private string _routeName;
 
-            public DataApiRouteDefinition(UrlTemplateDefinition templateDefinition, string storedProcedureName)
+            public DataApiRouteDefinition(UrlTemplateDefinition templateDefinition, string query)
             {
                 _templateDefinition = templateDefinition;
                 _defaults = new Dictionary<string, object>();
-                _defaults.Add("controller", "DataApi");
-                _defaults.Add("storedProcedure", storedProcedureName);
+                _defaults.Add(RouteDataConstants.ControllerKey, RouteDataConstants.DataApiControllerName);
+                _defaults.Add(RouteDataConstants.QueryKey, query);
 
-                _routeName = new Guid().ToString();
+                _routeName = Guid.NewGuid().ToString(); //routes need a unique name
 
                 //TODO add querystirng parameters to look for
 
@@ -77,36 +71,44 @@ namespace DataApi
                 var mapping = new Func<DataTable, T>(dt => dt.MapTo<T>().FirstOrDefault());
                 var defaults = _templateDefinition.Config.Routes[_routeName].Defaults;
 
-                defaults.Add("mapping", mapping);
+                defaults.Add(RouteDataConstants.MappingFunctionKey, mapping);
             }
 
+            public void ReturnsEnumerableOf<T>() where T : new()
+            {
+                var mapping = new Func<DataTable, IEnumerable<T>>(dt => dt.MapTo<T>());
+                var defaults = _templateDefinition.Config.Routes[_routeName].Defaults;
 
+                defaults.Add(RouteDataConstants.MappingFunctionKey, mapping);
+            }
+
+            public void Returns<T>(Func<DataTable, T> mappingFunction)
+            {
+                var defaults = _templateDefinition.Config.Routes[_routeName].Defaults;
+
+                defaults.Add(RouteDataConstants.MappingFunctionKey, mappingFunction);
+            }
         }
 
-
-
-        public static IRouteMapping AddDataApiRoute(this HttpConfiguration config, string routeName, string routeTemplate, string storedProcedureName, object defaults = null)
+        public static IRouteMapping AddDataApiRoute(this HttpConfiguration config, string routeName, string routeTemplate, string query, object defaults = null)
         {
             if (defaults == null) defaults = new { };
 
             IDictionary<string, object> defaults2 = defaults.ToDictionary();
-            defaults2.Add("controller", "DataApi");
-            defaults2.Add("storedProcedure", storedProcedureName);
+            defaults2.Add(RouteDataConstants.ControllerKey, RouteDataConstants.DataApiControllerName);
+            defaults2.Add(RouteDataConstants.QueryKey, query);
 
             var route = config.Routes.MapHttpRoute(routeName, routeTemplate, defaults2);
-
 
             return new RouteMapping(route);
         }
 
         public static void MapDataApiRoute(this HttpConfiguration config, string routeTemplate, object defaults = null)
         {
-
         }
 
-        class FluentRouteSyntax
+        private class FluentRouteSyntax
         {
-
             public FluentRouteSyntax(string routeName, IHttpRoute route)
             {
                 RouteName = routeName;
@@ -115,10 +117,6 @@ namespace DataApi
 
             internal string RouteName { get; private set; }
             internal IHttpRoute Route { get; private set; }
-            
         }
-
-
-
     }
 }

@@ -82,6 +82,7 @@
     <Compile Include="Internals\Flow\IRouteMapping.cs" />
     <Compile Include="Internals\Flow\RouteMapping.cs" />
     <Compile Include="Internals\ObjectExtensions.cs" />
+    <Compile Include="Internals\RouteDataConstants.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

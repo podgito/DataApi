@@ -24,9 +24,14 @@ namespace DataApi.Sample
 
             //Config.AppDataApiRoute("RouteName", "api/products").ToStoredProcedure("GetProducts"). 
 
+            config.MapDataApiRoute("api/products")
+                .WithQueryStringParameters("date", "sku")
+                .ToQuery("SELECT * FROM Products") //Only then is the route created since we have a SP to call
+                .ReturnsEnumerableOf<Product>(); //Add the return type
+
             config.MapDataApiRoute("api/products/{productId}")
                 .WithQueryStringParameters("date", "sku")
-                .ToStoredProcedure("USP_GetProducts") //Only then is the route created since we have a SP to call
+                .ToQuery("SELECT * FROM Products") //Only then is the route created since we have a SP to call
                 .Returns<Product>(); //Add the return type
 
             config.AddDataApiRoute("Sales", "api/sales/{saleId}", "USP_GetProducts");
