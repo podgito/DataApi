@@ -8,7 +8,7 @@ namespace DataApi.Internals
 {
     static class RouteDataConstants
     {
-
+        public static string DataApiControllerName = "DataApi";
         public static string ControllerKey = "controller";
         public static string QueryKey = "query";
         public static string MappingFunctionKey = "mappingFunction";
