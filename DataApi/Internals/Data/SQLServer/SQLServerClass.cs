@@ -19,23 +19,33 @@ namespace DataApi.Internals.Data.SQLServer
 
         public DataTable ExecuteQuery(string query)
         {
-            SqlConnection sqlConnection1 = new SqlConnection(_connectionString);
+            return ExecuteQuery(query, new Dictionary<string, object>());
+        }
+
+        public DataTable ExecuteQuery(string query, Dictionary<string, object> inputParameters)
+        {
+            SqlConnection sqlConnection = new SqlConnection(_connectionString);
             SqlCommand cmd = new SqlCommand();
             DataSet resultSet = new DataSet();
             var sqlAdapter = new SqlDataAdapter(cmd);
 
             cmd.CommandText = query; // "SELECT * FROM Products";
             cmd.CommandType = CommandType.Text;
-            cmd.Connection = sqlConnection1;
+            cmd.Connection = sqlConnection;
 
-            sqlConnection1.Open();
+            foreach(var kv in inputParameters)
+            {
+                cmd.Parameters.AddWithValue(kv.Key, kv.Value);
+            }
+
+            sqlConnection.Open();
 
             sqlAdapter.Fill(resultSet);
 
 
             // Data is accessible through the DataReader object here.
 
-            sqlConnection1.Close();
+            sqlConnection.Close();
 
             return resultSet.Tables[0];
         }

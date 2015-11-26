@@ -9,6 +9,7 @@ using DataApi.Internals;
 using System.Data;
 using DataTableMapper;
 using DataApi.Internals.Data.SQLServer;
+using DataApi.Internals.Data.SQL;
 
 namespace DataApi
 {
@@ -20,6 +21,9 @@ namespace DataApi
     public class DataApiController : ApiController
     {
 
+        static SQLParameterResolver _sqlParameterResolver = new SQLParameterResolver();
+
+        
 
         //public DataApiController(Func<DataTable, object> mappingFunction, string storedProcedure)
         //{
@@ -43,9 +47,17 @@ namespace DataApi
             var conn = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Projects\DataApi\DataApi.Sample\App_Data\SampleDB.mdf;Integrated Security=True";
 
             var sql = new SQLServerClass(conn);
+            var requiredSqlParameters = _sqlParameterResolver.Resolve(query);
 
-            var table = sql.ExecuteQuery(query);
+            var sqlParameters = new Dictionary<string, object>();
+            foreach(var parameter in requiredSqlParameters)
+            {
+                sqlParameters.Add(parameter, ControllerContext.RouteData.Values[parameter]);
+            }
 
+            var table = sql.ExecuteQuery(query, sqlParameters);
+
+           
 
 
             var mapping = (Func<DataTable, object>)this.ControllerContext.RouteData.Values[RouteDataConstants.MappingFunctionKey];

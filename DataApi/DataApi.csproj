@@ -76,6 +76,7 @@
     <Compile Include="DataProviders\SqlServerDataProvider.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
     <Compile Include="Internals\Data\SQLServer\SQLServerClass.cs" />
+    <Compile Include="Internals\Data\SQL\SQLParameterResolver.cs" />
     <Compile Include="Internals\DictionaryExtensions.cs" />
     <Compile Include="Internals\Flow\ProvisionalDataApiRoute.cs" />
     <Compile Include="Internals\Flow\IProvisionalDataApiRoute.cs" />
@@ -90,6 +91,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Internals\Data\MySQL\" />
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">
