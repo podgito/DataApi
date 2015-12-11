@@ -37,16 +37,11 @@ namespace DataApi
 
         public object Get(string query)
         {
-            //var storedProcedure = this.ControllerContext.RouteData.Values["storedProcedure"].ToString();
-
             //Get all the inputs
             dynamic inputs =
     ControllerContext.RouteData.Values.Where(kvp => !(kvp.Key == RouteDataConstants.ControllerKey || kvp.Key == RouteDataConstants.QueryKey));
 
-
-            var conn = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Projects\DataApi\DataApi.Sample\App_Data\SampleDB.mdf;Integrated Security=True";
-
-            var sql = new SQLServerClass(conn);
+            ISQLDataModel dataModel = (ISQLDataModel)ControllerContext.RouteData.Values[RouteDataConstants.DataModelKey];
             var requiredSqlParameters = _sqlParameterResolver.Resolve(query);
 
             var sqlParameters = new Dictionary<string, object>();
@@ -55,10 +50,7 @@ namespace DataApi
                 sqlParameters.Add(parameter, ControllerContext.RouteData.Values[parameter]);
             }
 
-            var table = sql.ExecuteQuery(query, sqlParameters);
-
-           
-
+            var table = dataModel.ExecuteQuery(query, sqlParameters);
 
             var mapping = (Func<DataTable, object>)this.ControllerContext.RouteData.Values[RouteDataConstants.MappingFunctionKey];
             return mapping(table);

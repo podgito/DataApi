@@ -13,6 +13,7 @@ namespace DataApi.Internals
         public static string QueryKey = "query";
         public static string MappingFunctionKey = "mappingFunction";
 
+        public static string DataModelKey = "dataModel";
     }
 }
 ;

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DataApi.Internals.Data.SQLServer
 {
-    public class SQLServerClass
+    public class SQLServerClass : ISQLDataModel
     {
         private string _connectionString;
 
@@ -29,7 +29,7 @@ namespace DataApi.Internals.Data.SQLServer
             DataSet resultSet = new DataSet();
             var sqlAdapter = new SqlDataAdapter(cmd);
 
-            cmd.CommandText = query; // "SELECT * FROM Products";
+            cmd.CommandText = query;
             cmd.CommandType = CommandType.Text;
             cmd.Connection = sqlConnection;
 
@@ -50,15 +50,15 @@ namespace DataApi.Internals.Data.SQLServer
             return resultSet.Tables[0];
         }
 
-        public DataTable ExecuteQueryStoredProcedure(string storedProcedureName, Dictionary<string, object> inputs)
-        {
-            throw new NotImplementedException();
-        }
+        //public DataTable ExecuteQueryStoredProcedure(string storedProcedureName, Dictionary<string, object> inputs)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public void ExecuteNonQueryStoredProcedure(string storedProcedureName, Dictionary<string, object> inputs)
-        {
-            throw new NotImplementedException();
-        }
+        //public void ExecuteNonQueryStoredProcedure(string storedProcedureName, Dictionary<string, object> inputs)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
     }
 }

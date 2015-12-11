@@ -1,4 +1,5 @@
 ﻿using DataApi.Internals;
+using DataApi.Internals.Data.SQLServer;
 using DataApi.Internals.Flow;
 using DataTableMapper;
 using System;
@@ -58,6 +59,7 @@ namespace DataApi
                 _defaults = new Dictionary<string, object>();
                 _defaults.Add(RouteDataConstants.ControllerKey, RouteDataConstants.DataApiControllerName);
                 _defaults.Add(RouteDataConstants.QueryKey, query);
+                _defaults.Add(RouteDataConstants.DataModelKey, new SQLServerClass(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Projects\DataApi\DataApi.Sample\App_Data\SampleDB.mdf;Integrated Security=True"));
 
                 _routeName = Guid.NewGuid().ToString(); //routes need a unique name
 
@@ -74,7 +76,7 @@ namespace DataApi
                 defaults.Add(RouteDataConstants.MappingFunctionKey, mapping);
             }
 
-            public void ReturnsEnumerableOf<T>() where T : new()
+            public void ReturnsArrayOf<T>() where T : new()
             {
                 var mapping = new Func<DataTable, IEnumerable<T>>(dt => dt.MapTo<T>());
                 var defaults = _templateDefinition.Config.Routes[_routeName].Defaults;

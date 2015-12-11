@@ -75,6 +75,7 @@
     <Compile Include="DataProviders\IDataProvider.cs" />
     <Compile Include="DataProviders\SqlServerDataProvider.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
+    <Compile Include="Internals\Data\SQLServer\ISQLDataModel.cs" />
     <Compile Include="Internals\Data\SQLServer\SQLServerClass.cs" />
     <Compile Include="Internals\Data\SQL\SQLParameterResolver.cs" />
     <Compile Include="Internals\DictionaryExtensions.cs" />
