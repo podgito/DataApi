@@ -13,14 +13,10 @@ namespace DataApi
 {
     public static class HttpConfigurationExtensions
     {
-        public static IProvisionalDataApiRoute AddDataApiRoute(this HttpConfiguration config, string routeName, string routeTemplate)
-        {
-            return new ProvisionalDataApiRoute(routeName, routeTemplate, config);
-        }
 
         public static UrlTemplateDefinition MapDataApiRoute(this HttpConfiguration config, string routeTemplate)
         {
-            return new UrlTemplateDefinition(config, routeTemplate);
+            return new UrlTemplateDefinition(config, routeTemplate, null);
         }
 
         public class UrlTemplateDefinition
@@ -28,11 +24,13 @@ namespace DataApi
             public string RouteTemplate { get; private set; }
             public string[] QueryStringParameters { get; private set; }
             public HttpConfiguration Config { get; private set; }
+            internal ISQLDataSource dataSource;
 
-            public UrlTemplateDefinition(HttpConfiguration config, string routeTemplate)
+            public UrlTemplateDefinition(HttpConfiguration config, string routeTemplate, ISQLDataSource dataSource)
             {
                 Config = config;
                 RouteTemplate = routeTemplate;
+                this.dataSource = dataSource;
             }
 
             public UrlTemplateDefinition WithQueryStringParameters(params string[] queryStringParameters)
@@ -59,7 +57,8 @@ namespace DataApi
                 _defaults = new Dictionary<string, object>();
                 _defaults.Add(RouteDataConstants.ControllerKey, RouteDataConstants.DataApiControllerName);
                 _defaults.Add(RouteDataConstants.QueryKey, query);
-                _defaults.Add(RouteDataConstants.DataModelKey, new SQLServerClass(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Projects\DataApi\DataApi.Sample\App_Data\SampleDB.mdf;Integrated Security=True"));
+                //_defaults.Add(RouteDataConstants.DataModelKey, new SQLServerDataSource(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Projects\DataApi\DataApi.Sample\App_Data\SampleDB.mdf;Integrated Security=True"));
+                _defaults.Add(RouteDataConstants.DataModelKey, templateDefinition.dataSource);
 
                 _routeName = Guid.NewGuid().ToString(); //routes need a unique name
 

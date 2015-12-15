@@ -4,6 +4,8 @@ namespace DataApi.Sample
 {
     public static class WebApiConfig
     {
+        private const string connectionString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Projects\DataApi\DataApi.Sample\App_Data\SampleDB.mdf;Integrated Security=True";
+
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
@@ -11,14 +13,28 @@ namespace DataApi.Sample
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            config.MapDataApiRoute("api/products")
-                .ToQuery("SELECT * FROM Products") //Only then is the route created since we have a SP to call
-                .ReturnsArrayOf<Product>(); //Add the return type
+            var dataApiBinding = config.CreateDataApiBinding(new Internals.Data.SQLServer.SQLServerDataSource(connectionString));
 
-            config.MapDataApiRoute("api/products/{productId}")
-                .WithQueryStringParameters("productId")
+
+            //v3
+            dataApiBinding.MapDataApiRoute("api/products")
+                .ToQuery("SELECT * FROM Products")
+                .ReturnsArrayOf<Product>();
+
+            dataApiBinding.MapDataApiRoute("api/products/{productId}")
                 .ToQuery("SELECT * FROM Products WHERE ProductId = @ProductId") //Only then is the route created since we have a SP to call
                 .Returns<Product>(); //Add the return type
+
+
+            //v2
+            //config.MapDataApiRoute("api/products")
+            //    .ToQuery("SELECT * FROM Products") //Only then is the route created since we have a SP to call
+            //    .ReturnsArrayOf<Product>(); //Add the return type
+
+            //config.MapDataApiRoute("api/products/{productId}")
+            //    //.WithQueryStringParameters("productId")
+            //    .ToQuery("SELECT * FROM Products WHERE ProductId = @ProductId") //Only then is the route created since we have a SP to call
+            //    .Returns<Product>(); //Add the return type
 
             //Old
             //config.AddDataApiRoute("Sales", "api/sales/{saleId}", "USP_GetProducts");

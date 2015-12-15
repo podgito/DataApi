@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace DataApi.Internals.Data.SQLServer
 {
-    public class SQLServerClass : ISQLDataModel
+    public class SQLServerDataSource : ISQLDataSource
     {
         private string _connectionString;
 
-        public SQLServerClass(string connectionString)
+        public SQLServerDataSource(string connectionString)
         {
             _connectionString = connectionString;
         }

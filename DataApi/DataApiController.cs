@@ -41,7 +41,7 @@ namespace DataApi
             dynamic inputs =
     ControllerContext.RouteData.Values.Where(kvp => !(kvp.Key == RouteDataConstants.ControllerKey || kvp.Key == RouteDataConstants.QueryKey));
 
-            ISQLDataModel dataModel = (ISQLDataModel)ControllerContext.RouteData.Values[RouteDataConstants.DataModelKey];
+            ISQLDataSource dataModel = (ISQLDataSource)ControllerContext.RouteData.Values[RouteDataConstants.DataModelKey];
             var requiredSqlParameters = _sqlParameterResolver.Resolve(query);
 
             var sqlParameters = new Dictionary<string, object>();
