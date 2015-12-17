@@ -1,6 +1,5 @@
 ﻿using System.Web.Http;
 using DataApi.Internals;
-using static DataApi.HttpConfigurationExtensions;
 
 namespace DataApi
 {

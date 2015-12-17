@@ -14,83 +14,6 @@ namespace DataApi
     public static class HttpConfigurationExtensions
     {
 
-        public static UrlTemplateDefinition MapDataApiRoute(this HttpConfiguration config, string routeTemplate)
-        {
-            return new UrlTemplateDefinition(config, routeTemplate, null);
-        }
-
-        public class UrlTemplateDefinition
-        {
-            public string RouteTemplate { get; private set; }
-            public string[] QueryStringParameters { get; private set; }
-            public HttpConfiguration Config { get; private set; }
-            internal ISQLDataSource dataSource;
-
-            public UrlTemplateDefinition(HttpConfiguration config, string routeTemplate, ISQLDataSource dataSource)
-            {
-                Config = config;
-                RouteTemplate = routeTemplate;
-                this.dataSource = dataSource;
-            }
-
-            public UrlTemplateDefinition WithQueryStringParameters(params string[] queryStringParameters)
-            {
-                QueryStringParameters = queryStringParameters;
-                return this;
-            }
-
-            public DataApiRouteDefinition ToQuery(string query)
-            {
-                return new DataApiRouteDefinition(this, query);
-            }
-        }
-
-        public class DataApiRouteDefinition
-        {
-            private IDictionary<string, object> _defaults;
-            private UrlTemplateDefinition _templateDefinition;
-            private string _routeName;
-
-            public DataApiRouteDefinition(UrlTemplateDefinition templateDefinition, string query)
-            {
-                _templateDefinition = templateDefinition;
-                _defaults = new Dictionary<string, object>();
-                _defaults.Add(RouteDataConstants.ControllerKey, RouteDataConstants.DataApiControllerName);
-                _defaults.Add(RouteDataConstants.QueryKey, query);
-                //_defaults.Add(RouteDataConstants.DataModelKey, new SQLServerDataSource(@"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\Projects\DataApi\DataApi.Sample\App_Data\SampleDB.mdf;Integrated Security=True"));
-                _defaults.Add(RouteDataConstants.DataModelKey, templateDefinition.dataSource);
-
-                _routeName = Guid.NewGuid().ToString(); //routes need a unique name
-
-                //TODO add querystirng parameters to look for
-
-                templateDefinition.Config.Routes.MapHttpRoute(_routeName, _templateDefinition.RouteTemplate, _defaults);
-            }
-
-            public void Returns<T>() where T : new()
-            {
-                var mapping = new Func<DataTable, T>(dt => dt.MapTo<T>().FirstOrDefault());
-                var defaults = _templateDefinition.Config.Routes[_routeName].Defaults;
-
-                defaults.Add(RouteDataConstants.MappingFunctionKey, mapping);
-            }
-
-            public void ReturnsArrayOf<T>() where T : new()
-            {
-                var mapping = new Func<DataTable, IEnumerable<T>>(dt => dt.MapTo<T>());
-                var defaults = _templateDefinition.Config.Routes[_routeName].Defaults;
-
-                defaults.Add(RouteDataConstants.MappingFunctionKey, mapping);
-            }
-
-            public void Returns<T>(Func<DataTable, T> mappingFunction)
-            {
-                var defaults = _templateDefinition.Config.Routes[_routeName].Defaults;
-
-                defaults.Add(RouteDataConstants.MappingFunctionKey, mappingFunction);
-            }
-        }
-
         public static IRouteMapping AddDataApiRoute(this HttpConfiguration config, string routeName, string routeTemplate, string query, object defaults = null)
         {
             if (defaults == null) defaults = new { };
@@ -108,16 +31,5 @@ namespace DataApi
         {
         }
 
-        private class FluentRouteSyntax
-        {
-            public FluentRouteSyntax(string routeName, IHttpRoute route)
-            {
-                RouteName = routeName;
-                Route = Route;
-            }
-
-            internal string RouteName { get; private set; }
-            internal IHttpRoute Route { get; private set; }
-        }
     }
 }

@@ -38,15 +38,16 @@ namespace DataApi
         public object Get(string query)
         {
             //Get all the inputs
-            dynamic inputs =
-    ControllerContext.RouteData.Values.Where(kvp => !(kvp.Key == RouteDataConstants.ControllerKey || kvp.Key == RouteDataConstants.QueryKey));
+    //        dynamic inputs =
+    //ControllerContext.RouteData.Values.Where(kvp => !(kvp.Key == RouteDataConstants.ControllerKey || kvp.Key == RouteDataConstants.QueryKey));
 
-            ISQLDataSource dataModel = (ISQLDataSource)ControllerContext.RouteData.Values[RouteDataConstants.DataModelKey];
+            ISQLDataSource dataModel = (ISQLDataSource)ControllerContext.RouteData.Values[RouteDataConstants.DataSourceKey];
             var requiredSqlParameters = _sqlParameterResolver.Resolve(query);
 
             var sqlParameters = new Dictionary<string, object>();
             foreach(var parameter in requiredSqlParameters)
             {
+                if (!ControllerContext.RouteData.Values.ContainsKey(parameter)) throw new HttpResponseException(System.Net.HttpStatusCode.BadRequest);
                 sqlParameters.Add(parameter, ControllerContext.RouteData.Values[parameter]);
             }
 
