@@ -60,6 +60,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
     </Reference>
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
@@ -73,7 +74,7 @@
   <ItemGroup>
     <Compile Include="DataApiController.cs" />
     <Compile Include="DataApiExtensions.cs" />
-    <Compile Include="DataApiRouteDefinition.cs" />
+    <Compile Include="QueryBinding.cs" />
     <Compile Include="DataSourceBinding.cs" />
     <Compile Include="HttpConfigurationExtensions.cs" />
     <Compile Include="Internals\ISQLDataSource.cs" />
@@ -84,8 +85,9 @@
     <Compile Include="Internals\Flow\RouteMapping.cs" />
     <Compile Include="Internals\ObjectExtensions.cs" />
     <Compile Include="Internals\RouteDataConstants.cs" />
+    <Compile Include="Internals\RouteDefaults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UrlTemplateDefinition.cs" />
+    <Compile Include="RouteBinding.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

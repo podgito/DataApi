@@ -13,11 +13,7 @@ using DataApi.Internals.Data.SQL;
 
 namespace DataApi
 {
-    public class Product
-    {
-        public int ProductId { get; set; }
-        public string Name { get; set; }
-    }
+    
     public class DataApiController : ApiController
     {
 
@@ -35,13 +31,15 @@ namespace DataApi
             throw new NotImplementedException();
         }
 
-        public object Get(string query)
+        public object Get()
         {
-            //Get all the inputs
-    //        dynamic inputs =
-    //ControllerContext.RouteData.Values.Where(kvp => !(kvp.Key == RouteDataConstants.ControllerKey || kvp.Key == RouteDataConstants.QueryKey));
 
-            ISQLDataSource dataModel = (ISQLDataSource)ControllerContext.RouteData.Values[RouteDataConstants.DataSourceKey];
+            QueryBinding queryBinding = (QueryBinding)ControllerContext.RouteData.Values[RouteDataConstants.QueryBindingKey];
+
+            ISQLDataSource dataModel = queryBinding.RouteBinding.DataSource; // (ISQLDataSource)ControllerContext.RouteData.Values[RouteDataConstants.DataSourceKey];
+
+            var query = queryBinding.Query;
+
             var requiredSqlParameters = _sqlParameterResolver.Resolve(query);
 
             var sqlParameters = new Dictionary<string, object>();
@@ -53,7 +51,7 @@ namespace DataApi
 
             var table = dataModel.ExecuteQuery(query, sqlParameters);
 
-            var mapping = (Func<DataTable, object>)this.ControllerContext.RouteData.Values[RouteDataConstants.MappingFunctionKey];
+            var mapping = queryBinding.MappingFunction;
             return mapping(table);
 
         }

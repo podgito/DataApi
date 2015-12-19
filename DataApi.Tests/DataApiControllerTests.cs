@@ -19,28 +19,32 @@ namespace DataApi.Tests
     [TestFixture]
     public class DataApiControllerTests
     {
-        private DataApiController _controller;
+        private DataApiController controller;
+        HttpConfiguration config;
 
         [SetUp]
         public void Setup()
         {
-            var config = new HttpConfiguration();
+            config = new HttpConfiguration();
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/api/products");
             var route = config.Routes.MapHttpRoute("DefaultApi", "api/{controller}/{id}");
             var routeData = new HttpRouteData(route, new HttpRouteValueDictionary { { "controller", "products" } });
 
-            _controller = new DataApiController();
-            _controller.ControllerContext = new HttpControllerContext(config, routeData, request);
-            _controller.Request = request;
-            _controller.Request.Properties[HttpPropertyKeys.HttpConfigurationKey] = config;
+            controller = new DataApiController();
+            controller.ControllerContext = new HttpControllerContext(config, routeData, request);
+            controller.Request = request;
+            controller.Request.Properties[HttpPropertyKeys.HttpConfigurationKey] = config;
 
-            _controller.ControllerContext.RouteData.Values[RouteDataConstants.DataSourceKey] = new Mock<ISQLDataSource>().Object;
+            controller.ControllerContext.RouteData.Values[RouteDataConstants.DataSourceKey] = new Mock<ISQLDataSource>().Object;
+            
         }
 
         [Test]
         public void Get_Returns_BadRequest400_When_All_SQL_Parameters_Cannot_Be_Resolved()
         {
-            var exception = Assert.Throws<HttpResponseException>(() => _controller.Get("SELECT * FROM tblProducts WHERE ProductId = @ProductId"));
+            const string query = "SELECT * FROM tblProducts WHERE ProductId = @ProductId";
+            controller.ControllerContext.RouteData.Values[RouteDataConstants.QueryBindingKey] = new QueryBinding(new RouteBinding(config, "api/products/{productId}", null), query);
+            var exception = Assert.Throws<HttpResponseException>(() => controller.Get());
             Assert.That(exception.Response.StatusCode == System.Net.HttpStatusCode.BadRequest);
         }
 

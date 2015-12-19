@@ -1,26 +1,20 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataApi.Internals.Data.SQL;
+using NUnit.Framework;
 using Shouldly;
-using DataApi.Internals.Data.SQL;
+using System.Linq;
 
 namespace DataApi.Tests.Internals.SQL
 {
-
     [TestFixture]
     public class SQLParameterResolverTests
     {
-        SQLParameterResolver _resolver;
+        private SQLParameterResolver _resolver;
+
         [SetUp]
         public void Setup()
         {
             _resolver = new SQLParameterResolver();
         }
-
-
 
         [Test]
         public void SQL_WITH_NO_INPUT_PARAMETERS_YIELDS_NO_RESULTS()
@@ -41,9 +35,5 @@ namespace DataApi.Tests.Internals.SQL
 
             parameters.Single().ShouldBe("ProductId");
         }
-
-        
-
-
     }
 }

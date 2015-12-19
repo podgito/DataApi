@@ -8,15 +8,21 @@ namespace DataApi
         private HttpConfiguration config;
         private ISQLDataSource dataSource;
 
-        internal DataSourceBinding(HttpConfiguration config, ISQLDataSource dataProvider)
+        //Marked internal because we don't want devs creating multiple instances
+        internal DataSourceBinding(HttpConfiguration config, ISQLDataSource dataSource)
         {
             this.config = config;
-            this.dataSource = dataProvider;
+            this.dataSource = dataSource;
         }
 
-        public UrlTemplateDefinition MapDataApiRoute(string routeTemplate)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="routeTemplate"></param>
+        /// <returns></returns>
+        public RouteBinding MapDataApiRoute(string routeTemplate)
         {
-            return new UrlTemplateDefinition(config, routeTemplate, dataSource);
+            return new RouteBinding(config, routeTemplate, dataSource);
         }
 
     }

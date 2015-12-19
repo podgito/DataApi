@@ -12,6 +12,7 @@ namespace DataApi.Internals
         public static string ControllerKey = "controller";
         public static string QueryKey = "query";
         public static string MappingFunctionKey = "mappingFunction";
+        public static string QueryBindingKey = "queryBinding";
 
         public static string DataSourceKey = "dataSource";
     }

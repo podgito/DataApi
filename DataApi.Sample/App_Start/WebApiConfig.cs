@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using DataApi.Sample.Models;
+using System.Web.Http;
 
 namespace DataApi.Sample
 {

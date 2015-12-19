@@ -6,18 +6,18 @@ using System.Web.Http;
 
 namespace DataApi
 {
-    public class UrlTemplateDefinition
+    public class RouteBinding
     {
         internal string RouteTemplate { get; private set; }
-        internal string[] QueryStringParameters { get; private set; }
+        //internal string[] QueryStringParameters { get; private set; }
         internal HttpConfiguration Config { get; private set; }
-        internal ISQLDataSource DataSource;
+        internal ISQLDataSource DataSource { get; private set; }
 
-        public UrlTemplateDefinition(HttpConfiguration config, string routeTemplate, ISQLDataSource dataSource)
+        public RouteBinding(HttpConfiguration config, string routeTemplate, ISQLDataSource dataSource)
         {
             Config = config;
             RouteTemplate = routeTemplate;
-            this.DataSource = dataSource;
+            DataSource = dataSource;
         }
 
         //public UrlTemplateDefinition WithQueryStringParameters(params string[] queryStringParameters)
@@ -26,9 +26,14 @@ namespace DataApi
         //    return this;
         //}
 
-        public DataApiRouteDefinition ToQuery(string query)
+        public QueryBinding ToQuery(string query)
         {
-            return new DataApiRouteDefinition(this, query);
+            return new QueryBinding(this, query);
+        }
+
+        public QueryBinding ToStoredProcedure(string storedProcedureName)
+        {
+            throw new NotImplementedException();
         }
     }
 }

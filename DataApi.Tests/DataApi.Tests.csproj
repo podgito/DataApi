@@ -96,6 +96,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataApiControllerTests.cs" />
+    <Compile Include="DataApiRouteDefinitionTests.cs" />
     <Compile Include="HttpConfigurationExtensionsTests.cs" />
     <Compile Include="Internals\SQL\SQLParameterResolverTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

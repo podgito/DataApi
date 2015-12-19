@@ -36,7 +36,7 @@ namespace DataApi.Tests
             var storedProcedure = "USP_UnitTest";
             _config.AddDataApiRoute("bla", routeTemplate, storedProcedure);
 
-            _config.ShouldMap(route).To<DataApiController>(System.Net.Http.HttpMethod.Get, x => x.Get(storedProcedure));
+            _config.ShouldMap(route).To<DataApiController>(System.Net.Http.HttpMethod.Get, x => x.Get());
         }
     }
 }
