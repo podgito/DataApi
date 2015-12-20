@@ -16,18 +16,18 @@ namespace DataApi
         public string Query { get; set; }
         public Func<DataTable, object> MappingFunction { get; private set; }
 
-        public QueryBinding(RouteBinding templateDefinition, string query)
+        public QueryBinding(RouteBinding routeBinding, string query)
         {
-            RouteBinding = templateDefinition;
+            RouteBinding = routeBinding;
             Query = query;
 
             var defaults = new Dictionary<string, object>();
-            defaults.Add(RouteDataConstants.ControllerKey, RouteDataConstants.DataApiControllerName);
-            defaults.Add(RouteDataConstants.QueryBindingKey, this);
+            defaults.Add(DataApiConstants.ControllerKey, DataApiConstants.DataApiControllerName);
+            defaults.Add(DataApiConstants.QueryBindingKey, this);
 
             _routeName = Guid.NewGuid().ToString(); //routes need a unique name
 
-            templateDefinition.Config.Routes.MapHttpRoute(_routeName, RouteBinding.RouteTemplate, defaults);
+            routeBinding.Config.Routes.MapHttpRoute(_routeName, RouteBinding.RouteTemplate, defaults);
         }
 
         public void Returns<T>() where T : new()

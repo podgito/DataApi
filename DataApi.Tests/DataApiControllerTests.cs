@@ -1,18 +1,15 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
-using Shouldly;
-using System.Web.Http;
+﻿using DataApi.Internals;
 using Moq;
-using DataApi.Internals;
+using NUnit.Framework;
+using System.Collections.Generic;
+using System.Data;
 using System.Net.Http;
-using System.Web.Http.Routing;
+using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Hosting;
+using System.Web.Http.Routing;
+using Shouldly;
+using System.Linq;
 
 namespace DataApi.Tests
 {
@@ -20,7 +17,7 @@ namespace DataApi.Tests
     public class DataApiControllerTests
     {
         private DataApiController controller;
-        HttpConfiguration config;
+        private HttpConfiguration config;
 
         [SetUp]
         public void Setup()
@@ -35,18 +32,85 @@ namespace DataApi.Tests
             controller.Request = request;
             controller.Request.Properties[HttpPropertyKeys.HttpConfigurationKey] = config;
 
-            controller.ControllerContext.RouteData.Values[RouteDataConstants.DataSourceKey] = new Mock<ISQLDataSource>().Object;
-            
+        }
+
+        [Test]
+        public void Get_Returns_List_Of_Products()
+        {
+            //Arrange
+            const string query = "SELECT * FROM tblProducts";
+            var mockDataSource = new Mock<ISQLDataSource>();
+
+            mockDataSource.Setup(ds => ds.ExecuteQuery(query, It.IsAny<Dictionary<string, object>>())).Returns(CreateDataTable());
+
+            var binding = new QueryBinding(new RouteBinding(config, "api/products/{productId}", mockDataSource.Object), query);
+            binding.ReturnsArrayOf<Product>();
+
+            controller.ControllerContext.RouteData.Values[DataApiConstants.QueryBindingKey] = binding;
+
+            //Act
+            IEnumerable<Product> responseObject = (IEnumerable<Product>)controller.Get();
+
+            //Assert
+            responseObject.ToList().ShouldBeOfType<List<Product>>();
+        }
+
+        [Test]
+        public void Get_Returns_Single_Product()
+        {
+            //Arrange
+            const string query = "SELECT * FROM tblProducts";
+            var mockDataSource = new Mock<ISQLDataSource>();
+
+            mockDataSource.Setup(ds => ds.ExecuteQuery(query, It.IsAny<Dictionary<string, object>>())).Returns(CreateDataTable());
+
+            var binding = new QueryBinding(new RouteBinding(config, "api/products/{productId}", mockDataSource.Object), query);
+            binding.Returns<Product>();
+
+            controller.ControllerContext.RouteData.Values[DataApiConstants.QueryBindingKey] = binding;
+
+            //Act
+            var responseObject = controller.Get();
+
+            //Assert
+            responseObject.ShouldBeOfType<Product>();
         }
 
         [Test]
         public void Get_Returns_BadRequest400_When_All_SQL_Parameters_Cannot_Be_Resolved()
         {
             const string query = "SELECT * FROM tblProducts WHERE ProductId = @ProductId";
-            controller.ControllerContext.RouteData.Values[RouteDataConstants.QueryBindingKey] = new QueryBinding(new RouteBinding(config, "api/products/{productId}", null), query);
+            var binding = new QueryBinding(new RouteBinding(config, "api/products/{productId}", null), query);
+            binding.Returns<object>(); //create a fake binding that won't get executed anyway
+
+            controller.ControllerContext.RouteData.Values[DataApiConstants.QueryBindingKey] = binding;
             var exception = Assert.Throws<HttpResponseException>(() => controller.Get());
             Assert.That(exception.Response.StatusCode == System.Net.HttpStatusCode.BadRequest);
         }
 
+        [Test]
+        public void Get_Throws_Exception_When_No_Mapping_Function_Exists()
+        {
+            controller.ControllerContext.RouteData.Values[DataApiConstants.QueryBindingKey] = new QueryBinding(new RouteBinding(config, "api/products/{productId}", null), "");
+            var exception = Assert.Throws<HttpResponseException>(() => controller.Get(), DataApiConstants.GetWithoutMappingErrorMessage);
+            Assert.That(exception.Response.StatusCode == System.Net.HttpStatusCode.MethodNotAllowed);
+        }
+
+
+        DataTable CreateDataTable()
+        {
+            var table = new DataTable();
+
+            table.Columns.Add("Name");
+            table.Columns.Add("Id", typeof(int));
+            table.Rows.Add("Xbox", 1);
+            return table;
+        }
+
+        class Product
+        {
+            public string Name { get; set; }
+            public int Id { get; set; }
+        }
     }
 }

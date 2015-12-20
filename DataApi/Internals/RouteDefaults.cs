@@ -19,9 +19,9 @@ namespace DataApi.Internals
 
         public RouteDefaults(string query, ISQLDataSource dataSource)
         {
-            Add(RouteDataConstants.ControllerKey, RouteDataConstants.DataApiControllerName);
-            Add(RouteDataConstants.QueryKey, query);
-            Add(RouteDataConstants.DataSourceKey, dataSource);
+            Add(DataApiConstants.ControllerKey, DataApiConstants.DataApiControllerName);
+            Add(DataApiConstants.QueryKey, query);
+            Add(DataApiConstants.DataSourceKey, dataSource);
         }
 
 

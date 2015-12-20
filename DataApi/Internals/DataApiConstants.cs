@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataApi.Internals
 {
-    static class RouteDataConstants
+    static class DataApiConstants
     {
         public static string DataApiControllerName = "DataApi";
         public static string ControllerKey = "controller";
@@ -15,6 +15,8 @@ namespace DataApi.Internals
         public static string QueryBindingKey = "queryBinding";
 
         public static string DataSourceKey = "dataSource";
+
+        public static string GetWithoutMappingErrorMessage = "No mapping setup to Get data.";
     }
 }
 ;

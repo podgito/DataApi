@@ -1,7 +1,5 @@
-using System;
-using System.Linq;
-using System.Collections.Generic;
 using DataApi.Internals;
+using System;
 using System.Web.Http;
 
 namespace DataApi
@@ -9,8 +7,10 @@ namespace DataApi
     public class RouteBinding
     {
         internal string RouteTemplate { get; private set; }
+
         //internal string[] QueryStringParameters { get; private set; }
         internal HttpConfiguration Config { get; private set; }
+
         internal ISQLDataSource DataSource { get; private set; }
 
         public RouteBinding(HttpConfiguration config, string routeTemplate, ISQLDataSource dataSource)
@@ -20,7 +20,7 @@ namespace DataApi
             DataSource = dataSource;
         }
 
-        //public UrlTemplateDefinition WithQueryStringParameters(params string[] queryStringParameters)
+        //public RouteBinding WithQueryStringParameters(params string[] queryStringParameters)
         //{
         //    QueryStringParameters = queryStringParameters;
         //    return this;

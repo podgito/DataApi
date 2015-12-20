@@ -1,30 +1,24 @@
-﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using DataApi;
+﻿using DataApi.Internals.Data.SQLServer;
 using MvcRouteTester;
+using NUnit.Framework;
+using System.Net.Http;
 
 namespace DataApi.Tests
 {
     [TestFixture]
     public class RouteTests
     {
-
-        System.Web.Http.HttpConfiguration _config;
+        private System.Web.Http.HttpConfiguration config;
 
         [SetUp]
         public void Setup()
         {
             //GlobalConfiguration.Configure(WebApiConfig.Register);
 
-            _config = new System.Web.Http.HttpConfiguration();
+            config = new System.Web.Http.HttpConfiguration();
 
-            _config.EnsureInitialized();
+            config.EnsureInitialized();
         }
-
 
         [Test]
         [TestCase("api/products/", "/api/products")]
@@ -32,11 +26,12 @@ namespace DataApi.Tests
         [TestCase("api/products/{productId}", "/api/products/123?isNew=true")]
         public void TestDataApiRouteMapping(string routeTemplate, string route)
         {
+            var dataApiBinding = config.CreateDataApiBinding(new SQLServerDataSource(""));
 
-            var storedProcedure = "USP_UnitTest";
-            _config.AddDataApiRoute("bla", routeTemplate, storedProcedure);
+            dataApiBinding.MapDataApiRoute(routeTemplate)
+                .ToQuery("SELECT * FROM Products");
 
-            _config.ShouldMap(route).To<DataApiController>(System.Net.Http.HttpMethod.Get, x => x.Get());
+            config.ShouldMap(route).To<DataApiController>(HttpMethod.Get, x => x.Get());
         }
     }
 }

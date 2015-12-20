@@ -76,15 +76,13 @@
     <Compile Include="DataApiExtensions.cs" />
     <Compile Include="QueryBinding.cs" />
     <Compile Include="DataSourceBinding.cs" />
-    <Compile Include="HttpConfigurationExtensions.cs" />
     <Compile Include="Internals\ISQLDataSource.cs" />
     <Compile Include="Internals\Data\SQLServer\SQLServerClass.cs" />
     <Compile Include="Internals\Data\SQL\SQLParameterResolver.cs" />
     <Compile Include="Internals\DictionaryExtensions.cs" />
     <Compile Include="Internals\Flow\IRouteMapping.cs" />
     <Compile Include="Internals\Flow\RouteMapping.cs" />
-    <Compile Include="Internals\ObjectExtensions.cs" />
-    <Compile Include="Internals\RouteDataConstants.cs" />
+    <Compile Include="Internals\DataApiConstants.cs" />
     <Compile Include="Internals\RouteDefaults.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RouteBinding.cs" />

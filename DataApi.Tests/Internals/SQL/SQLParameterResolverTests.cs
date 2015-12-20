@@ -17,7 +17,7 @@ namespace DataApi.Tests.Internals.SQL
         }
 
         [Test]
-        public void SQL_WITH_NO_INPUT_PARAMETERS_YIELDS_NO_RESULTS()
+        public void Sql_With_No_Input_Parameters_Yields_No_Results()
         {
             var sql = "SELECT * FROM Employees";
 
@@ -27,7 +27,20 @@ namespace DataApi.Tests.Internals.SQL
         }
 
         [Test]
-        public void SQL_WITH_PARAMETER_USED_MULTIPLE_TIMES_ONLY_RETURNED_ONCE()
+        public void Sql_With_Two_Different_Parameters_Yields_One_Each()
+        {
+            
+            var sql = "SELECT * FROM Employees WHERE ProductId = @ProductId AND Name = @Name";
+            
+            var parameters = _resolver.Resolve(sql);
+
+            parameters.Count().ShouldBe(2);
+            parameters.ShouldContain("ProductId");
+            parameters.ShouldContain("Name");
+        }
+
+        [Test]
+        public void Sql_With_Parameter_Used_Multiple_Times_Only_Returned_Once()
         {
             var sql = "SELECT *, @ProductId FROM Employees WHERE ProductId = @ProductId ";
 
