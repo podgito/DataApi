@@ -8,20 +8,38 @@ using System.Threading.Tasks;
 
 namespace DataApi.Internals.Data.SQLServer
 {
+    /// <summary>
+    /// Data source for SqlServer databases
+    /// </summary>
     public class SQLServerDataSource : ISQLDataSource
     {
         private string _connectionString;
 
+        /// <summary>
+        /// Create a SqlServer DataSource instance
+        /// </summary>
+        /// <param name="connectionString">Connection string for the database</param>
         public SQLServerDataSource(string connectionString)
         {
             _connectionString = connectionString;
         }
 
+        /// <summary>
+        /// Executes the query and returns a dataTable
+        /// </summary>
+        /// <param name="query"></param>
+        /// <returns></returns>
         public DataTable ExecuteQuery(string query)
         {
             return ExecuteQuery(query, new Dictionary<string, object>());
         }
 
+        /// <summary>
+        /// Executes the query with input parameters and returns a dataTable
+        /// </summary>
+        /// <param name="query"></param>
+        /// <param name="inputParameters"></param>
+        /// <returns></returns>
         public DataTable ExecuteQuery(string query, Dictionary<string, object> inputParameters)
         {
             SqlConnection sqlConnection = new SqlConnection(_connectionString);

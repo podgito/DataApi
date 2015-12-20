@@ -3,6 +3,9 @@ using DataApi.Internals;
 
 namespace DataApi
 {
+    /// <summary>
+    /// Holds data source binding for mapping DataAp endpoints
+    /// </summary>
     public class DataSourceBinding
     {
         private HttpConfiguration config;

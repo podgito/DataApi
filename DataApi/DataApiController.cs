@@ -9,7 +9,7 @@ using System.Web.Http;
 
 namespace DataApi
 {
-    public class DataApiController : ApiController
+    internal class DataApiController : ApiController
     {
         private static SQLParameterResolver _sqlParameterResolver = new SQLParameterResolver();
 
