@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>DataApi</id>
+        <version>0.1.0</version>
+        <title>DataApi</title>
+        <authors>Padraic Duffy</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Create ASP.Net Web Api endpoints to retrieve data succinctly.</description>
+        <releaseNotes />
+    </metadata>
+    <files>
+        <file src="bin\Release\DataApi.dll" target="lib\net45\DataApi.dll" />
+    </files>
+</package>
