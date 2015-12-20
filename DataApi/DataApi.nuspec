@@ -8,8 +8,11 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <description>Create ASP.Net Web Api endpoints to retrieve data succinctly.</description>
         <releaseNotes />
+        <dependencies>
+            <dependency id="DataTableMapper" version="1.1.1" />
+        </dependencies>
     </metadata>
     <files>
-        <file src="bin\Release\DataApi.dll" target="lib\net45\DataApi.dll" />
+        <file src="DataApi.dll" target="lib\net45\DataApi.dll" />
     </files>
 </package>
